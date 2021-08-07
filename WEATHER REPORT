@@ -1,0 +1,49 @@
+import requests
+from datetime import datetime
+#my api key
+api_key = '225549d529bd30fc92f49ea2af5004ee'
+#getting input location from user
+location = input("ENTER THE LOCATION: ")
+#getting the weather data from the website with specified location
+weather_report_link = "https://api.openweathermap.org/data/2.5/weather?q="+location+"&appid="+api_key
+weather_report = requests.get(weather_report_link)
+weather_data = weather_report.json()
+#formatting the output
+temp_city = ((weather_data['main']['temp']) - 273.15)
+weather_desc = weather_data['weather'][0]['description']
+humid = weather_data['main']['humidity']
+wind_spd = weather_data['wind']['speed']
+pressure = weather_data['main']['pressure']
+wind_gust = weather_data['wind']['gust']
+date_time = datetime.now().strftime("%d %b %Y | %I:%M:%S %p")
+
+print ("*************************************************************")
+print ("WEATHER STATISTICS OF ' {} ' at {}".format(location.upper(), date_time))
+print ("*************************************************************")
+print ("Temperature           : {:.2f}° C".format(temp_city))
+print ("Weather Description   :",weather_desc)
+print ("Humidity              :",humid, '%')
+print ("Wind speed            :",wind_spd ,'kmph')
+print ("Pressure              :",pressure, 'mb')
+print ("Wind gust             :",wind_gust ,'kmph')
+print("**************************************************************")
+
+#Making the copy of the contents in a text file 
+weather = [temp_city,weather_desc,humid,wind_spd,pressure,wind_gust]
+#using open() buit-in function to write to a text file
+with open("weather_file.txt" ,mode= 'w', encoding= 'utf-8' ) as file :
+    file.write("************************************************************* \n ")   
+    file.write("WEATHER STATISTICS OF ' {} ' at {}\n".format(location.upper(), date_time))
+    file.write("************************************************************* \n ") 
+    file.write("Temperature           : {:.2f} degree Celsius\n".format(weather[0]))
+    file.write("{} {} \n".format("Weather Description   :",weather[1]))
+    file.write("{} {} {} \n".format("Humidity              :",weather[2], '%'))
+    file.write("{} {} {} \n".format("Wind speed            :",weather[3],'kmph'))
+    file.write("{} {} {} \n".format("Pressure              :",weather[4],'mb'))
+    file.write("{} {} {} \n".format("Wind gust             :",weather[5],'kmph'))
+    file.write("************************************************************* \n ") 
+  
+#displaying the contents of the file
+with open('weather_file.txt', encoding='utf8') as file:
+    for line in file:
+        print(line.strip())
