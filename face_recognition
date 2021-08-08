@@ -1,0 +1,18 @@
+from google.colab.patches import cv2_imshow
+import cv2
+face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+#eye_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_eye.xml')
+path = r'/content/candice.jpg'
+img = cv2.imread(path,1)
+gray_img = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+face = face_cascade.detectMultiScale(gray_img,scaleFactor=1.6,minNeighbors=5)
+#print(face)
+#print(type(face))
+#print(face.shape)
+for x,y,w,h in face:
+    img=cv2.rectangle(img,(x,y),(x+w,y+h),(255,0,0),3)
+print(img)
+print(img.shape)
+cv2.imshow('candice',img)
+cv2.waitKey(20)
+cv2.destroyAllWindows
